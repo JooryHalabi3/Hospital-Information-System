@@ -35,9 +35,9 @@ app.use((req, res, next) => {
 // ملفات ثابتة
 app.use(express.static(path.join(__dirname, "/public")));
 
-// صفحة اختبار بسيطة للجذر (عشان ما تطلع Cannot GET)
+// الصفحة الرئيسية -> تفتح واجهة home مباشرة
 app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "Hospital Backend API is running 🚀" });
+  res.sendFile(path.join(__dirname, "public", "home", "home.html"));
 });
 
 // متغيرات عامة
