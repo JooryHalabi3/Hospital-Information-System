@@ -27,14 +27,18 @@ app.use(session({
   }
 }));
 
-
 app.use((req, res, next) => {
-    console.log("🔐 جلسة المستخدم:", req.session.user);
-    next();
-  });
-  
+  console.log("🔐 جلسة المستخدم:", req.session.user);
+  next();
+});
+
 // ملفات ثابتة
 app.use(express.static(path.join(__dirname, "/public")));
+
+// صفحة اختبار بسيطة للجذر (عشان ما تطلع Cannot GET)
+app.get("/", (req, res) => {
+  res.json({ status: "ok", message: "Hospital Backend API is running 🚀" });
+});
 
 // متغيرات عامة
 global.recoveryCodes = {};
@@ -45,13 +49,22 @@ const profileRoutes = require("./routes/profile");
 const patientHomeRoute = require("./routes/patientHome");
 const userInfoRoute = require("./routes/userInfo");
 const employeeHomeRoute = require("./routes/employeeHome");
-
+const publicDataRoutes = require("./routes/publicData");
+const adminRoutes = require("./routes/admin");
+const communicationRoutes = require("./routes/communication");
+const evaluationRoutes = require("./routes/evaluation");
+const checkSessionRoute = require("./routes/checkSession");
 
 app.use("/api", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/patient-home", patientHomeRoute);
 app.use("/api/user-info", userInfoRoute);
 app.use("/api/employee-home", employeeHomeRoute);
+app.use("/api", publicDataRoutes);       // /api/policies, /api/services
+app.use("/api/admin", adminRoutes);      // /api/admin/policies, /api/admin/services
+app.use("/api/communication", communicationRoutes); // /api/communication/send-message
+app.use("/api/evaluation", evaluationRoutes);        // /api/evaluation
+app.use("/api", checkSessionRoute);      // /api/check-session
 
 // تشغيل السيرفر
 const PORT = process.env.PORT || 3000;
