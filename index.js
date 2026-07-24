@@ -35,9 +35,10 @@ app.use((req, res, next) => {
 // ملفات ثابتة
 app.use(express.static(path.join(__dirname, "/public")));
 
-// الصفحة الرئيسية -> تفتح واجهة home مباشرة
+// الصفحة الرئيسية -> تحويل فعلي لواجهة home
+// (مهم: نستخدم redirect مو sendFile، عشان مسارات home.css والصور النسبية تشتغل صح)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "home", "home.html"));
+  res.redirect("/home/home.html");
 });
 
 // متغيرات عامة
